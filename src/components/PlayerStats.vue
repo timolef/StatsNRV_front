@@ -201,7 +201,7 @@
         const goodSeason = selectedSeason.replace('/', '')
         try {
           let baseURL = null;
-            if (process.env.NODE_ENV === "development") {
+            if (process.env.VUE_APP_NODE_ENV === "development") {
                 baseURL = process.env.VUE_APP_API_URL_LOCAL;
             } else {
                 baseURL = process.env.VUE_APP_API_URL_PROD;
@@ -227,7 +227,7 @@
       async fetchPlayerIdentity(playerId) {
         try {
           let baseURL = null;
-            if (process.env.NODE_ENV === "development") {
+            if (process.env.VUE_APP_NODE_ENV === "development") {
                 baseURL = process.env.VUE_APP_API_URL_LOCAL;
             } else {
                 baseURL = process.env.VUE_APP_API_URL_PROD;
