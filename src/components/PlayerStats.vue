@@ -33,36 +33,77 @@
 
       <!-- Tableaux des stats de jeu et stats par équipe -->
       <v-row>
-        <!-- Tableau pour les stats de jeu -->
-        <v-col cols="12" md="12">
-          <v-card-title>Stats par Match</v-card-title>
-          <v-data-table
-            v-if="gameLog && gameLog.length"
-            :headers="statsHeaders"
-            :items="gameLog"
-            class="stats-table elevation-1"
-            hide-default-footer
-          >
-            <template v-slot:[`item.gameDate`]="{ item }">
-              {{ formatDate(item.gameDate) }}
-            </template>
-            <template v-slot:[`item.opponent`]="{ item }">
-              {{ item.opponentCommonName['default'] }}
-            </template>
-            <template v-slot:[`item.goals`]="{ item }">
-              {{ item.goals || 0 }}
-            </template>
-            <template v-slot:[`item.assists`]="{ item }">
-              {{ item.assists || 0 }}
-            </template>
-            <template v-slot:[`item.points`]="{ item }">
-              {{ item.points || 0 }}
-            </template>
-          </v-data-table>
-          <div v-else class="no-data">
-            <p>Aucune donnée de match disponible.</p>
-          </div>
-        </v-col>
+        <!-- Si le joueur est un gardien, afficher des statistiques spécifiques aux gardiens -->
+        <template v-if="isGoalie">
+          <v-col cols="12" md="12">
+            <v-card-title>Stats Gardien par Match</v-card-title>
+            <v-data-table
+              v-if="gameLog && gameLog.length"
+              :headers="goalieStatsHeaders"
+              :items="gameLog"
+              class="stats-table elevation-1"
+              hide-default-footer
+            >
+              <template v-slot:[`item.gameDate`]="{ item }">
+                {{ formatDate(item.gameDate) }}
+              </template>
+              <template v-slot:[`item.decision`]="{ item }">
+                {{ item.decision || 'N/A' }}
+              </template>
+              <template v-slot:[`item.shotsAgainst`]="{ item }">
+                {{ item.shotsAgainst || 0 }}
+              </template>
+              <template v-slot:[`item.goalsAgainst`]="{ item }">
+                {{ item.goalsAgainst || 0 }}
+              </template>
+              <template v-slot:[`item.savePctg`]="{ item }">
+                {{ item.savePctg || 'N/A' }}
+              </template>
+              <template v-slot:[`item.shutouts`]="{ item }">
+                {{ item.shutouts || 0 }}
+              </template>
+              <template v-slot:[`item.toi`]="{ item }">
+                {{ item.toi || 'N/A' }}
+              </template>
+            </v-data-table>
+            <div v-else class="no-data">
+              <p>Aucune donnée de match disponible pour ce gardien.</p>
+            </div>
+          </v-col>
+        </template>
+
+        <!-- Si le joueur n'est pas un gardien, afficher des statistiques classiques -->
+        <template v-else>
+          <v-col cols="12" md="12">
+            <v-card-title>Stats par Match</v-card-title>
+            <v-data-table
+              v-if="gameLog && gameLog.length"
+              :headers="statsHeaders"
+              :items="gameLog"
+              class="stats-table elevation-1"
+              hide-default-footer
+            >
+              <template v-slot:[`item.gameDate`]="{ item }">
+                {{ formatDate(item.gameDate) }}
+              </template>
+              <template v-slot:[`item.opponent`]="{ item }">
+                {{ item.opponentCommonName['default'] }}
+              </template>
+              <template v-slot:[`item.goals`]="{ item }">
+                {{ item.goals || 0 }}
+              </template>
+              <template v-slot:[`item.assists`]="{ item }">
+                {{ item.assists || 0 }}
+              </template>
+              <template v-slot:[`item.points`]="{ item }">
+                {{ item.points || 0 }}
+              </template>
+            </v-data-table>
+            <div v-else class="no-data">
+              <p>Aucune donnée de match disponible.</p>
+            </div>
+          </v-col>
+        </template>
 
         <!-- Tableau pour les stats par équipe -->
         <v-col cols="12" md="12">
@@ -126,6 +167,15 @@
           { title: 'Temps', key: 'toi' },
 
         ],
+        goalieStatsHeaders: [ /* En-têtes pour les gardiens */ 
+        { title: 'Date', key: 'gameDate' },
+        { title: 'Décision', key: 'decision' },
+        { title: 'Tirs contre', key: 'shotsAgainst' },
+        { title: 'Buts encaissés', key: 'goalsAgainst' },
+        { title: 'Pourcentage d\'arrêts', key: 'savePctg' },
+        { title: 'Blanchissages', key: 'shutouts' },
+        { title: 'Temps sur glace', key: 'toi' },
+      ],
         teamStatsHeaders: [ // En-têtes pour le tableau des stats par équipe
           { title: 'Équipe', key: 'teamName' },
           { title: 'Matchs', key: 'matchs' },
@@ -150,10 +200,18 @@
         console.log(selectedSeason)
         const goodSeason = selectedSeason.replace('/', '')
         try {
-          const response = await axios.get(`http://localhost:5000/api/player/${playerId}/stats/${goodSeason}`);
+          let baseURL = null;
+            if (process.env.NODE_ENV === "development") {
+                baseURL = process.env.VUE_APP_API_URL_LOCAL;
+            } else {
+                baseURL = process.env.VUE_APP_API_URL_PROD;
+            }
+          const response = await axios.get(`${baseURL}/api/player/${playerId}/stats/${goodSeason}`);
           this.gameLog = response.data.gameLog;
           this.playerStats = response.data;
-          console.log(this.playerStats)
+          console.log("infos : ", this.playerInfos)
+
+          this.isGoalie = this.playerInfos?.position === 'G';
   
           // Calculer les statistiques moyennes sur les 5 derniers matchs
           this.calculateAverageStats(this.gameLog);
@@ -168,8 +226,15 @@
       },
       async fetchPlayerIdentity(playerId) {
         try {
-          const response = await axios.get(`http://localhost:5000/api/player/${playerId}`);
+          let baseURL = null;
+            if (process.env.NODE_ENV === "development") {
+                baseURL = process.env.VUE_APP_API_URL_LOCAL;
+            } else {
+                baseURL = process.env.VUE_APP_API_URL_PROD;
+            }
+          const response = await axios.get(`${baseURL}/api/player/${playerId}`);
           this.playerInfos = response.data;
+          this.isGoalie = this.playerInfos?.position === 'G';
         } catch (error) {
           console.error('Error fetching player infos:', error);
         } finally {
@@ -287,6 +352,13 @@
   .season-select {
     width: 200px;
   }
+  .v-data-table th {
+  background-color: #1976d2;
+  color: #ffffff;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 14px;
+}
   
   /* Carte pour les stats moyennes */
   .average-stats-card {

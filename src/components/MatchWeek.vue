@@ -61,7 +61,13 @@
     methods: {
       async fetchMatches() {
         try {
-          const response = await axios.get('http://localhost:5000/matches-week');
+          let baseURL = null;
+            if (process.env.NODE_ENV === "development") {
+                baseURL = process.env.VUE_APP_API_URL_LOCAL;
+            } else {
+                baseURL = process.env.VUE_APP_API_URL_PROD;
+            }
+          const response = await axios.get(`${baseURL}/matches-week`);
   
           // Flatten the matches across all dates and include logos
           this.matches = response.data; // Store raw matches data

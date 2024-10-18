@@ -1,17 +1,12 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 import LoginPage from '@/components/LoginPage.vue';
 import MatchWeek from '@/components/MatchWeek.vue';
 import PlayerSearch from '@/components/PlayerSearch.vue';
 import PlayerStats from '@/components/PlayerStats.vue';
 import TeamStats from '@/components/TeamStats.vue';
 import MilestonePage from '@/components/MilestonePage.vue';
+import TopPlayers from '@/components/TopPlayers.vue';
 const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
   {
     path: '/login',
     name: 'login',
@@ -43,13 +38,10 @@ const routes = [
     component: PlayerStats,
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
+    path: '/top-players',
+    name: 'TopPlayers',
+    component: TopPlayers,
+  },
 ]
 
 const router = createRouter({

@@ -1,18 +1,22 @@
 <template>
   <v-container class="stats-page">
-    <!-- Sélecteur de saison pour les stats d'équipe -->
-    <v-select
-      v-model="selectedTeamSeason"
-      :items="teamSeasons"
-      label="Select Season for Team Stats"
-      @update:model-value="onTeamSeasonChange"
-      class="season-select"
-      hide-details
-    ></v-select>
-
-    <!-- Tableau pour les stats par équipe -->
+    <!-- Bande bleue avec le titre et le sélecteur de saison -->
     <v-card class="team-stats-card mt-4">
-      <v-card-title class="card-title">Stats par Équipe</v-card-title>
+      <v-row class="card-title align-center">
+        <span>Stats par Équipe</span>
+        <v-spacer></v-spacer>
+        <!-- Sélecteur de saison pour les stats d'équipe -->
+        <v-select
+          v-model="selectedTeamSeason"
+          :items="teamSeasons"
+          label="Select Season for Team Stats"
+          @update:model-value="onTeamSeasonChange"
+          class="season-select"
+          hide-details
+        ></v-select>
+      </v-row>
+
+      <!-- Tableau pour les stats par équipe -->
       <v-data-table
         v-if="teamStats && teamStats.length"
         :headers="teamStatsHeaders"
@@ -65,8 +69,14 @@ export default {
   methods: {
     async fetchTeamStats(season) {
       try {
+        let baseURL = null;
+            if (process.env.NODE_ENV === "development") {
+                baseURL = process.env.VUE_APP_API_URL_LOCAL;
+            } else {
+                baseURL = process.env.VUE_APP_API_URL_PROD;
+            }
         const seasonStr = season.replace('/', ''); // Remplacer le '/' dans la saison pour correspondre au format attendu par l'API
-        const response = await axios.get(`http://localhost:5000/api/team-stats/${seasonStr}`);
+        const response = await axios.get(`${baseURL}/api/team-stats/${seasonStr}`);
         this.teamStats = response.data;
         console.log(this.teamStats)
       } catch (error) {
@@ -85,6 +95,7 @@ export default {
 
 <style scoped>
 /* Container styling */
+/* Container styling */
 .stats-page {
   padding: 24px;
   min-height: 100vh;
@@ -100,6 +111,7 @@ export default {
 
 .v-select {
   background: #ffffff;
+  color:#333;
   border-radius: 8px;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -125,7 +137,8 @@ export default {
   padding: 16px;
   background-color: #1976d2;
   color: #ffffff;
-  text-align: center;
+  display: flex;
+  align-items: center;
 }
 
 /* Table Styling */

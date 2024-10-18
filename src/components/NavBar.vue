@@ -6,7 +6,7 @@
     dark
     class="navbar"
   >
-    <v-toolbar-title class="navbar-title">NHL</v-toolbar-title>
+    <v-toolbar-title class="navbar-title">StatsNRV</v-toolbar-title>
 
     <v-list dense>
       <v-list-item
@@ -33,12 +33,11 @@ export default {
   data() {
     return {
       navItems: [
-        { title: "Accueil", route: "/" },
         { title: "Matchs", route: "/matchs-week" },
         { title: "Classement équipes", route: "/teams-stats" },
         { title: "Recherche joueur", route: "/player-search" },
         { title: "Paliers", route: "/milestones" },
-        { title: "A propos", route: "/about" },
+        { title: "Performances", route: "/top-players" },
       ],
     };
   },
@@ -57,7 +56,6 @@ export default {
   font-size: 24px;
   padding: 16px;
   color: #fff;
-  text-transform: uppercase;
   text-align: center;
 }
 

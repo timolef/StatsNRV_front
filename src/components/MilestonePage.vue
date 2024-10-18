@@ -100,7 +100,13 @@
     methods: {
         async fetchSkatersMilestones() {
       try {
-        const response = await axios.get('http://localhost:5000/api/milestones/skaters');
+        let baseURL = null;
+            if (process.env.NODE_ENV === "development") {
+                baseURL = process.env.VUE_APP_API_URL_LOCAL;
+            } else {
+                baseURL = process.env.VUE_APP_API_URL_PROD;
+            }
+        const response = await axios.get(`${baseURL}/api/milestones/skaters`);
         this.skatersMilestones = response.data.data.map(item => ({
           ...item,
           remainingAmount: this.calculateRemaining(item) // Ajoute le montant restant à chaque item
@@ -111,7 +117,13 @@
     },
     async fetchGoaliesMilestones() {
       try {
-        const response = await axios.get('http://localhost:5000/api/milestones/goalies');
+        let baseURL = null;
+            if (process.env.NODE_ENV === "development") {
+                baseURL = process.env.VUE_APP_API_URL_LOCAL;
+            } else {
+                baseURL = process.env.VUE_APP_API_URL_PROD;
+            }
+        const response = await axios.get(`${baseURL}/api/milestones/goalies`);
         this.goaliesMilestones = response.data.data.map(item => ({
           ...item,
           remainingAmount: this.calculateRemaining(item) // Ajoute le montant restant à chaque item
