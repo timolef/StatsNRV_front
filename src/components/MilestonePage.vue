@@ -8,7 +8,6 @@
           :headers="skatersHeaders"
           :items="skatersMilestones"
           class="milestones-table elevation-1"
-          hide-default-footer
         >
           <template v-slot:[`item.firstName`]="{ item }">
             {{ item.firstName }}
@@ -39,7 +38,6 @@
           :headers="goaliesHeaders"
           :items="goaliesMilestones"
           class="milestones-table elevation-1"
-          hide-default-footer
         >
           <template v-slot:[`item.firstName`]="{ item }">
             {{ item.firstName }}
