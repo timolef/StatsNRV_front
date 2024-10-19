@@ -36,6 +36,18 @@
         <template v-slot:[`item.points`]="{ item }">
           {{ item.points || 0 }}
         </template>
+        <template v-slot:[`item.goalsForPG`]="{ item }">
+          {{ item.goalsForPG.toFixed(2) || 0 }}
+        </template>
+        <template v-slot:[`item.goalsAgainstPG`]="{ item }">
+          {{ item.goalsAgainstPG.toFixed(2) || 0 }}
+        </template>
+        <template v-slot:[`item.shotsForPG`]="{ item }">
+          {{ item.shotsForPG.toFixed(2) || 0 }}
+        </template>
+        <template v-slot:[`item.shotsAgainstPG`]="{ item }">
+          {{ item.shotsAgainstPG.toFixed(2) || 0 }}
+        </template>
       </v-data-table>
       <div v-else class="no-data">
         <p>Aucune donnée de statistiques d'équipe disponible.</p>
@@ -57,11 +69,16 @@ export default {
         { title: 'Équipe', key: 'teamName' },
         { title: 'Points', key: 'points' },
         { title: 'Victoire', key: 'wins' },
+        { title: 'Victoire (regulation)', key: 'regulationWins' },
+        { title: 'Victoire (shootout)', key: 'shootoutWins' },
         { title: 'Défaite', key: 'losses' },
+        { title: 'Défaite (overtime)', key: 'otLosses' },
         { title: 'Buts pour', key: 'goalsFor' },
         { title: 'Buts contre', key: 'goalsAgainst' },
         { title: 'Buts pour par match', key: 'goalsForPG' },
         { title: 'Buts contre par match', key: 'goalsAgainstPG' },
+        { title: 'Tirs pour par match', key: 'shotsForPG' },
+        { title: 'Tirs contre par match', key: 'shotsAgainstPG' },
       ],
       loading: true,
     };
