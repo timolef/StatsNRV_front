@@ -27,6 +27,7 @@
           <p>But moyen: {{ averageStats.goals || 0 }}</p>
           <p>Assists moyen: {{ averageStats.assists || 0 }}</p>
           <p>Points moyen: {{ averageStats.points || 0 }}</p>
+          <p>Temps moyen: {{ averageStats.toi || 0 }}</p>
           <p>Ratio tirs/buts: {{ averageStats.shotsPerGoal || 'N/A' }}</p>
         </v-card-subtitle>
       </v-card>
@@ -189,7 +190,7 @@
         playerInfos: null,
         gameLog: null,
         teamStats: [], // Initialisation des stats par équipe
-        averageStats: { goals: 0, assists: 0, points: 0 }, // Pour les moyennes
+        averageStats: { goals: 0, assists: 0, points: 0, toi: 0 }, // Pour les moyennes
         selectedSeason: '2024/2025',
         seasons: ['2024/2025', '2023/2024', '2022/2023', '2021/2022', '2020/2021', '2019/2020', '2018/2019', '2017/2018', '2016/2017'],
         statsHeaders: [
@@ -274,6 +275,7 @@
           this.loading = false;
         }
       },
+      
       async fetchPlayerIdentity(playerId) {
         try {
           let baseURL = null;
@@ -361,16 +363,23 @@
         const totalAssists = lastFiveGames.reduce((sum, game) => sum + (game.assists || 0), 0);
         const totalPoints = lastFiveGames.reduce((sum, game) => sum + (game.points || 0), 0);
         const totalShots = lastFiveGames.reduce((sum, game) => sum + (game.shots || 0), 0);
-
+        const totalTOIInSeconds = lastFiveGames.reduce((sum, game) => {
+            const [minutes, seconds] = (game.toi || "00:00").split(':').map(Number);
+            return sum + (minutes * 60 + seconds);
+        }, 0);
+        const averageTOIInSeconds = totalTOIInSeconds / 5;
+        const averageMinutes = Math.floor(averageTOIInSeconds / 60);
+        const averageSeconds = Math.floor(averageTOIInSeconds % 60);
+        const averageTOI = `${averageMinutes}:${averageSeconds.toString().padStart(2, '0')}`;
         const shotsPerGoal = totalGoals > 0 ? (totalShots / totalGoals).toFixed(2) : 'N/A';
-
-
+        console.log("toi : ", averageTOI)
 
         this.averageStats = {
           goals: (totalGoals / 5).toFixed(2), // Moyenne des buts
           assists: (totalAssists / 5).toFixed(2), // Moyenne des assists
           points: (totalPoints / 5).toFixed(2),
           shotsPerGoal,
+          toi: averageTOI
         };
       },
       formatDate(date) {
