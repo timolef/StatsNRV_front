@@ -30,7 +30,7 @@
             </div>
             <div class="match-score"  v-else>
                 
-                En attente de la fin du match
+                Pas encore commencé
             </div>
             </template>
 
