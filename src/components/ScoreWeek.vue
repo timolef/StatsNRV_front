@@ -24,8 +24,13 @@
           </template>
         
           <template v-slot:[`item.score`]="{ item }">
-            <div class="match-score">
+            <div class="match-score"  v-if="item.homeTeamScore">
+                
                 {{ item.homeTeamScore }} : {{ item.awayTeamScore }}
+            </div>
+            <div class="match-score"  v-else>
+                
+                En attente de la fin du match
             </div>
             </template>
 
