@@ -24,13 +24,18 @@
           </template>
         
           <template v-slot:[`item.score`]="{ item }">
-            <div class="match-score"  v-if="item.homeTeamScore">
-                
-                {{ item.homeTeamScore }} : {{ item.awayTeamScore }}
-            </div>
-            <div class="match-score"  v-else>
-                
-                Pas encore commencé
+            <div class="match-score">
+                <span v-if="item.homeTeamScore">{{ item.homeTeamScore }} : {{ item.awayTeamScore }}</span>
+                <span v-else>Pas encore commencé</span>
+
+                <!-- Show "Live" icon and text if the game is live -->
+                <div v-if="item.gameState === 'LIVE'" class="live-status">
+                <img src="https://img.icons8.com/color/512/youtube-live.png" alt="Live Icon" class="live-icon" />
+                <span>Match en cours</span>
+                </div>
+                <div v-else-if="item.gameState === 'OFF'" class="finished-status">
+                <span class="finished-icon"></span> Match terminé
+                </div>
             </div>
             </template>
 
@@ -93,6 +98,7 @@
             awayTeamLogo: game.teams.awayTeam.logo,
             awayTeamScore : game.teams.awayTeam.score,
             gameTime: game.gameTime,
+            gameState: game.gameState,
           }));
         } catch (error) {
           console.error('Error fetching matches:', error);
@@ -112,117 +118,179 @@
   </script>
   
   <style scoped>
+  /* Global styling improvements */
+/* Global styling improvements */
+.matches-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 30px;
+  background-color: #f1f3f5;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  font-family: 'Arial', sans-serif;
+}
+
+.matches-card {
+  border-radius: 12px;
+  background-color: white;
+  overflow: hidden;
+}
+
+.matches-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #00346c;
+  text-align: center;
+  padding: 15px 0;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.matches-table {
+  margin-top: 30px;
+}
+
+.team-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 0;
+}
+
+.team-logo {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.team-name {
+  font-weight: 600;
+  color: #343a40;
+}
+
+.match-date,
+.match-time {
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #6c757d;
+}
+
+.match-score {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  color: #007BFF;
+}
+
+.v-data-table {
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.v-data-table-header th {
+  background-color: #007BFF;
+  color: white;
+  text-transform: uppercase;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.v-data-table__wrapper {
+  background-color: #fff;
+}
+
+.v-data-table tbody tr {
+  transition: background-color 0.3s;
+}
+
+.v-data-table tbody tr:hover {
+  background-color: #e9ecef;
+}
+
+/* LIVE match styling */
+.live-status {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #ff4444; /* Attention-grabbing red for live status */
+  animation: blink 1s infinite; /* Blinking effect for live matches */
+}
+
+.live-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  animation: pulse 1.5s infinite; /* Pulsing effect for the live icon */
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Finished match styling for gameState = 'OFF' */
+.finished-status {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #28a745; /* Green color to indicate match finished */
+  margin-top: 10px;
+}
+
+.finished-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  background-color: #28a745; /* Icon matches the text color */
+  border-radius: 50%;
+}
+
+@media (max-width: 768px) {
   .matches-container {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 30px; /* Augmentation du padding pour plus d'espace */
-    background-color: #f1f3f5; /* Couleur de fond plus douce pour le conteneur */
-    border-radius: 12px; /* Coins plus arrondis */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Ombre plus marquée */
-    font-family: 'Arial', sans-serif; /* Police pour améliorer la lisibilité */
-  }
-
-  .matches-card {
-    border-radius: 12px; /* Coins arrondis */
-    background-color: white;
-    overflow: hidden; /* Pour gérer le débordement */
-  }
-
-  .matches-title {
-    font-size: 28px; /* Augmentation de la taille de police pour le titre */
-    font-weight: bold; /* Font-weight plus audacieux */
-    color: #ffffff;
-    background-color: #00346c;
-    text-align: center;
-    padding: 15px 0; /* Espacement ajusté */
-    border-top-left-radius: 12px; /* Coins arrondis */
-    border-top-right-radius: 12px; /* Coins arrondis */
-  }
-
-  .matches-table {
-    margin-top: 30px; /* Espace accru au-dessus du tableau */
+    padding: 15px;
   }
 
   .team-info {
-    display: flex;
-    align-items: center;
-    gap: 15px; /* Espacement accru entre les logos et les noms */
-    padding: 10px 0; /* Espacement ajusté */
+    flex-direction: column;
+    text-align: center;
   }
 
   .team-logo {
-    width: 50px; /* Légère augmentation de la taille du logo */
-    height: 50px; /* Légère augmentation de la taille du logo */
-    object-fit: contain;
-    border-radius: 50%; /* Logos circulaires */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Ombre plus marquée */
+    margin-bottom: 10px;
   }
 
-  .team-name {
-    font-weight: 600; /* Légèrement plus audacieux */
-    color: #343a40; /* Couleur de texte légèrement plus sombre */
-  }
-
-  .match-date,
-  .match-time {
-    text-align: center;
-    font-size: 1rem; /* Taille de police légèrement augmentée */
-    font-weight: 500; /* Légèrement plus audacieux */
-    color: #6c757d; /* Couleur de texte plus douce */
+  .matches-title {
+    font-size: 1.7rem;
   }
 
   .match-score {
-    font-size: 1.5rem; /* Augmentation de la taille de la police pour le score */
-    font-weight: bold;
-    text-align: center;
-    color: #007BFF; /* Couleur dynamique pour le score */
+    font-size: 1.2rem;
   }
+}
 
-  .v-data-table {
-    border-radius: 12px; /* Coins arrondis pour le tableau */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Ombre plus marquée */
-  }
 
-  .v-data-table-header th {
-    background-color: #007BFF; /* Couleur de fond pour l'en-tête */
-    color: white;
-    text-transform: uppercase;
-    font-size: 0.95rem; /* Taille de police ajustée pour une meilleure lisibilité */
-    text-align: center;
-  }
-
-  .v-data-table__wrapper {
-    background-color: #fff;
-  }
-
-  .v-data-table tbody tr {
-    transition: background-color 0.3s;
-  }
-
-  .v-data-table tbody tr:hover {
-    background-color: #e9ecef; /* Couleur de fond plus douce au survol */
-  }
-
-  @media (max-width: 768px) {
-    .matches-container {
-      padding: 15px; /* Réduction du padding sur les petits écrans */
-    }
-
-    .team-info {
-      flex-direction: column;
-      text-align: center;
-    }
-
-    .team-logo {
-      margin-bottom: 10px; /* Augmentation de la marge en bas pour le logo */
-    }
-
-    .matches-title {
-      font-size: 1.7rem; /* Taille de police ajustée pour le titre sur petits écrans */
-    }
-
-    .match-score {
-      font-size: 1.2rem; /* Taille de police ajustée pour le score sur petits écrans */
-    }
-  }
 </style>
