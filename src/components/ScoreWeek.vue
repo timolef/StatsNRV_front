@@ -40,7 +40,7 @@
           <!-- Colonne Heure du match -->
           <template v-slot:[`item.gameTime`]="{ item }">
             <div class="match-time">
-              {{ formatTime(item.gameTime) }}
+              {{ item.gameTime }}
             </div>
           </template>
         </v-data-table>
