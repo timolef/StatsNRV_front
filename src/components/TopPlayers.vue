@@ -11,7 +11,9 @@
         hide-default-footer
       >
         <template v-slot:[`item.skaterFullName`]="{ item }">
-          <div class="player-name">{{ item.skaterFullName }}</div>
+            <router-link :to="`/player/${item.playerId}`" class="player-name">
+          {{ item.skaterFullName }}
+        </router-link>
         </template>
         <template v-slot:[`item.score`]="{ item }">
           <div class="player-score">{{ item.score.toFixed(2) }}</div>
