@@ -25,7 +25,7 @@
         
           <template v-slot:[`item.score`]="{ item }">
             <div class="match-score">
-                <span v-if="item.homeTeamScore">{{ item.homeTeamScore }} : {{ item.awayTeamScore }}</span>
+                <span v-if="item.homeTeamScore >= 0">{{ item.homeTeamScore }} : {{ item.awayTeamScore }}</span>
                 <span v-else>Pas encore commencé</span>
 
                 <!-- Show "Live" icon and text if the game is live -->
