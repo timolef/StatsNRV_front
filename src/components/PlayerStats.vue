@@ -367,7 +367,7 @@
             const [minutes, seconds] = (game.toi || "00:00").split(':').map(Number);
             return sum + (minutes * 60 + seconds);
         }, 0);
-        const averageTOIInSeconds = totalTOIInSeconds / 5;
+        const averageTOIInSeconds = totalTOIInSeconds / lastFiveGames.length;
         const averageMinutes = Math.floor(averageTOIInSeconds / 60);
         const averageSeconds = Math.floor(averageTOIInSeconds % 60);
         const averageTOI = `${averageMinutes}:${averageSeconds.toString().padStart(2, '0')}`;
@@ -375,9 +375,9 @@
         console.log("toi : ", averageTOI)
 
         this.averageStats = {
-          goals: (totalGoals / 5).toFixed(2), // Moyenne des buts
-          assists: (totalAssists / 5).toFixed(2), // Moyenne des assists
-          points: (totalPoints / 5).toFixed(2),
+          goals: (totalGoals / lastFiveGames.length).toFixed(2), // Moyenne des buts
+          assists: (totalAssists / lastFiveGames.length).toFixed(2), // Moyenne des assists
+          points: (totalPoints / lastFiveGames.length).toFixed(2),
           shotsPerGoal,
           toi: averageTOI
         };

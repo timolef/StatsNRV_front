@@ -33,7 +33,7 @@
                 <img src="https://img.icons8.com/color/512/youtube-live.png" alt="Live Icon" class="live-icon" />
                 <span>Match en cours</span>
                 </div>
-                <div v-else-if="item.gameState === 'OFF'" class="finished-status">
+                <div v-else-if="item.gameState === 'OFF' || item.gameState === 'FINAL'" class="finished-status">
                 <span class="finished-icon"></span> Match terminé
                 </div>
             </div>
