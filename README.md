@@ -1,4 +1,4 @@
-# nhl_frontend
+# StatsNRV
 
 ## Project setup
 ```
