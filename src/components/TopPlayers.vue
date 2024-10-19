@@ -10,10 +10,9 @@
         v-else
         :headers="headers"
         :items="players"
-        :items-per-page="40"
+        :items-per-page="20"
         class="elevation-1 performance-table"
         dense
-        hide-default-footer
       >
         <template v-slot:[`item.skaterFullName`]="{ item }">
           <router-link :to="`/player/${item.playerId}`" class="player-name">

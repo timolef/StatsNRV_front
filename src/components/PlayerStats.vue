@@ -43,7 +43,6 @@
               :headers="goalieStatsHeaders"
               :items="gameLog"
               class="stats-table elevation-1"
-              hide-default-footer
             >
               <template v-slot:[`item.gameDate`]="{ item }">
                 {{ formatDate(item.gameDate) || 'N/A' }}
@@ -82,7 +81,6 @@
               :headers="statsHeaders"
               :items="gameLog"
               class="stats-table elevation-1"
-              hide-default-footer
             >
               <template v-slot:[`item.gameDate`]="{ item }">
                 {{ formatDate(item.gameDate) || 'N/A' }}
@@ -107,13 +105,12 @@
         </template>
         <template v-if="isGoalie">
           <v-col cols="12" md="12">
-            <v-card-title>Stats Gardien par Equipe</v-card-title>
+            <v-card-title>Stats Gardien contre Equipe</v-card-title>
             <v-data-table
               v-if="gameLog && gameLog.length"
               :headers="goalieTeamStatsHeaders"
               :items="teamStats"
               class="stats-table elevation-1"
-              hide-default-footer
             >
               <template v-slot:[`item.gameDate`]="{ item }">
                 {{ formatDate(item.gameDate) || 'N/A' }}
@@ -141,13 +138,12 @@
         </template>
         <template v-else>
           <v-col cols="12" md="12">
-            <v-card-title>Stats par Equipe</v-card-title>
+            <v-card-title>Stats contre Equipes</v-card-title>
             <v-data-table
               v-if="gameLog && gameLog.length"
               :headers="teamStatsHeaders"
               :items="teamStats"
               class="stats-table elevation-1"
-              hide-default-footer
             >
               <template v-slot:[`item.gameDate`]="{ item }">
                 {{ formatDate(item.gameDate) || 'N/A' }}

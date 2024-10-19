@@ -9,7 +9,7 @@
         <v-select
           v-model="selectedTeamSeason"
           :items="teamSeasons"
-          label="Seletionner une saison..."
+          label="Selectionner une saison..."
           @update:model-value="onTeamSeasonChange"
           class="season-select"
           hide-details
@@ -22,7 +22,6 @@
         :headers="teamStatsHeaders"
         :items="teamStats"
         class="team-stats-table elevation-1"
-        hide-default-footer
       >
         <template v-slot:[`item.teamName`]="{ item }">
           {{ item.teamName }}
@@ -66,6 +65,7 @@ export default {
       selectedTeamSeason: '2024/2025', // Saison sélectionnée par défaut
       teamSeasons: ['2024/2025', '2023/2024', '2022/2023', '2021/2022', '2020/2021'], // Liste des saisons
       teamStatsHeaders: [
+      { title: 'Position', key: 'position' },
         { title: 'Équipe', key: 'teamName' },
         { title: 'Points', key: 'points' },
         { title: 'Victoire', key: 'wins' },
@@ -94,7 +94,10 @@ export default {
             }
         const seasonStr = season.replace('/', ''); // Remplacer le '/' dans la saison pour correspondre au format attendu par l'API
         const response = await axios.get(`${baseURL}/api/team-stats/${seasonStr}`);
-        this.teamStats = response.data;
+        this.teamStats = response.data.map((team, index) => ({
+          ...team,
+          position: index + 1, // La position est basée sur l'index (commence à 1)
+        }));
         console.log(this.teamStats)
       } catch (error) {
         console.error('Error fetching team stats:', error);
