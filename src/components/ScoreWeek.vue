@@ -108,115 +108,116 @@
   
   <style scoped>
   .matches-container {
-  max-width: 1200px;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: #f8f9fa; /* Light background for contrast */
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.matches-card {
-  border-radius: 10px;
-  background-color: white;
-}
-
-.matches-title {
-  font-size: 1.8rem;
-  font-weight: bold;
-  text-align: center;
-  color: #333;
-  padding: 10px 0;
-  background-color: #007BFF;
-  color: white;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-}
-
-.matches-table {
-  margin-top: 20px;
-}
-
-.team-info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 5px 0;
-}
-
-.team-logo {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-  border-radius: 50%; /* Make the logos circular */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.team-name {
-  font-weight: bold;
-  color: #333;
-}
-
-.match-date,
-.match-time {
-  text-align: center;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #666;
-}
-
-.match-score {
-  font-size: 1.2rem;
-  font-weight: bold;
-  text-align: center;
-  color: #007BFF;
-}
-
-.v-data-table {
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.v-data-table-header th {
-  background-color: #007BFF;
-  color: white;
-  text-transform: uppercase;
-  font-size: 0.9rem;
-  text-align: center;
-}
-
-.v-data-table__wrapper {
-  background-color: #fff;
-}
-
-.v-data-table tbody tr {
-  transition: background-color 0.3s;
-}
-
-.v-data-table tbody tr:hover {
-  background-color: #f1f1f1;
-}
-
-@media (max-width: 768px) {
-  .matches-container {
-    padding: 10px;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 30px; /* Augmentation du padding pour plus d'espace */
+    background-color: #f1f3f5; /* Couleur de fond plus douce pour le conteneur */
+    border-radius: 12px; /* Coins plus arrondis */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Ombre plus marquée */
+    font-family: 'Arial', sans-serif; /* Police pour améliorer la lisibilité */
   }
 
-  .team-info {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .team-logo {
-    margin-bottom: 5px;
+  .matches-card {
+    border-radius: 12px; /* Coins arrondis */
+    background-color: white;
+    overflow: hidden; /* Pour gérer le débordement */
   }
 
   .matches-title {
-    font-size: 1.5rem;
+    font-size: 28px; /* Augmentation de la taille de police pour le titre */
+    font-weight: bold; /* Font-weight plus audacieux */
+    color: #ffffff;
+    background-color: #00346c;
+    text-align: center;
+    padding: 15px 0; /* Espacement ajusté */
+    border-top-left-radius: 12px; /* Coins arrondis */
+    border-top-right-radius: 12px; /* Coins arrondis */
+  }
+
+  .matches-table {
+    margin-top: 30px; /* Espace accru au-dessus du tableau */
+  }
+
+  .team-info {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Espacement accru entre les logos et les noms */
+    padding: 10px 0; /* Espacement ajusté */
+  }
+
+  .team-logo {
+    width: 50px; /* Légère augmentation de la taille du logo */
+    height: 50px; /* Légère augmentation de la taille du logo */
+    object-fit: contain;
+    border-radius: 50%; /* Logos circulaires */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Ombre plus marquée */
+  }
+
+  .team-name {
+    font-weight: 600; /* Légèrement plus audacieux */
+    color: #343a40; /* Couleur de texte légèrement plus sombre */
+  }
+
+  .match-date,
+  .match-time {
+    text-align: center;
+    font-size: 1rem; /* Taille de police légèrement augmentée */
+    font-weight: 500; /* Légèrement plus audacieux */
+    color: #6c757d; /* Couleur de texte plus douce */
   }
 
   .match-score {
-    font-size: 1rem;
+    font-size: 1.5rem; /* Augmentation de la taille de la police pour le score */
+    font-weight: bold;
+    text-align: center;
+    color: #007BFF; /* Couleur dynamique pour le score */
   }
-}
-  </style>
+
+  .v-data-table {
+    border-radius: 12px; /* Coins arrondis pour le tableau */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Ombre plus marquée */
+  }
+
+  .v-data-table-header th {
+    background-color: #007BFF; /* Couleur de fond pour l'en-tête */
+    color: white;
+    text-transform: uppercase;
+    font-size: 0.95rem; /* Taille de police ajustée pour une meilleure lisibilité */
+    text-align: center;
+  }
+
+  .v-data-table__wrapper {
+    background-color: #fff;
+  }
+
+  .v-data-table tbody tr {
+    transition: background-color 0.3s;
+  }
+
+  .v-data-table tbody tr:hover {
+    background-color: #e9ecef; /* Couleur de fond plus douce au survol */
+  }
+
+  @media (max-width: 768px) {
+    .matches-container {
+      padding: 15px; /* Réduction du padding sur les petits écrans */
+    }
+
+    .team-info {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .team-logo {
+      margin-bottom: 10px; /* Augmentation de la marge en bas pour le logo */
+    }
+
+    .matches-title {
+      font-size: 1.7rem; /* Taille de police ajustée pour le titre sur petits écrans */
+    }
+
+    .match-score {
+      font-size: 1.2rem; /* Taille de police ajustée pour le score sur petits écrans */
+    }
+  }
+</style>

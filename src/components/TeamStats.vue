@@ -152,8 +152,8 @@ export default {
   font-weight: bold;
   color: #333;
   padding: 16px;
-  background-color: #1976d2;
   color: #ffffff;
+  background-color: #00346c;
   display: flex;
   align-items: center;
 }

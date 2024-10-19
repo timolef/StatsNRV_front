@@ -176,11 +176,13 @@
 
 /* Titre de la carte */
 .milestones-title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-  padding: 16px;
-  border-bottom: 1px solid #e0e0e0;
+    font-size: 28px; /* Taille de police augmentée */
+    font-weight: bold; /* Utilisation de 'bold' pour plus d'impact */
+    
+    color: #ffffff;
+    background-color: #00346c; /* Couleur du texte plus sombre pour un meilleur contraste */
+    text-align: center;
+    padding-bottom: 20px;
 }
 
 /* Styles pour le tableau des milestones */

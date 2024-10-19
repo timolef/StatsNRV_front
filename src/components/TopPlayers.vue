@@ -64,12 +64,12 @@
   }
   
   .title {
-    font-family: 'Roboto', sans-serif;
-    font-size: 2.5rem;
-    font-weight: 500;
+    font-size: 28px; /* Augmentation de la taille de police pour le titre */
+    font-weight: bold; /* Font-weight plus audacieux */
+    color: #ffffff;
+    background-color: #00346c;
     text-align: center;
     margin-bottom: 20px;
-    color: #2c3e50;
   }
   
   .performance-table {

@@ -101,7 +101,7 @@
               </template>
             </v-data-table>
             <div v-else class="no-data">
-              <p>Aucune donnée de match disponible.</p>
+              <p>Aucune donnée de match disponible pour ce joueur.</p>
             </div>
           </v-col>
         </template>
@@ -169,7 +169,7 @@
               </template>
             </v-data-table>
             <div v-else class="no-data">
-              <p>Aucune donnée de match disponible pour ce gardien.</p>
+              <p>Aucune donnée de match disponible pour ce joueur.</p>
             </div>
           </v-col>
         </template>
@@ -425,15 +425,14 @@
     align-items: center;
     font-size: 20px;
     font-weight: bold;
-    color: #333;
+    color: #ffffff;
+    background-color: #00346c;
   }
   
   .season-select {
     width: 200px;
   }
   .v-data-table th {
-  background-color: #1976d2;
-  color: #ffffff;
   text-transform: uppercase;
   font-weight: bold;
   font-size: 14px;

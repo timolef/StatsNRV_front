@@ -106,7 +106,8 @@
     align-items: center;
     min-height: 100vh;
     padding: 20px;
-    background-color: #f5f5f5;
+    background-color: #e9ecef; /* Couleur de fond plus douce */
+    font-family: 'Arial', sans-serif; /* Changement de police pour une meilleure lisibilité */
   }
   
   /* Carte contenant les matchs */
@@ -114,16 +115,23 @@
     width: 100%;
     max-width: 800px;
     background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    border-radius: 12px; /* Coins plus arrondis */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Ombre plus marquée */
+    padding: 30px; /* Padding plus généreux */
+    transition: transform 0.2s; /* Transition pour un effet d'animation */
   }
-  
+
+  .matches-card:hover {
+    transform: scale(1.02); /* Effet d'animation au survol */
+  }
+
   /* Titre des matchs de la semaine */
   .matches-title {
-    font-size: 24px;
-    font-weight: 600;
-    color: #333;
+    font-size: 28px; /* Taille de police augmentée */
+    font-weight: bold; /* Utilisation de 'bold' pour plus d'impact */
+    
+    color: #ffffff;
+    background-color: #00346c; /* Couleur du texte plus sombre pour un meilleur contraste */
     text-align: center;
     padding-bottom: 20px;
   }
@@ -131,56 +139,60 @@
   /* Tableau des matchs */
   .matches-table {
     width: 100%;
+    border-collapse: collapse; /* Suppression des bordures entre les cellules */
   }
   
   /* Alignement et espacement pour la colonne des logos et noms des équipes */
   .team-info {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px; /* Espace plus important entre le logo et le nom */
   }
   
   /* Style pour les logos des équipes */
   .team-logo {
-    width: 32px;
-    height: 32px;
+    width: 40px; /* Augmentation de la taille du logo */
+    height: 40px; /* Augmentation de la taille du logo */
     border-radius: 50%;
     object-fit: cover;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   }
   
   /* Style pour les noms des équipes */
   .team-name {
-    font-size: 16px;
-    font-weight: 500;
-    color: #555;
+    font-size: 18px; /* Augmentation de la taille du texte */
+    font-weight: 600; /* Utilisation de '600' pour un texte plus audacieux */
+    color: #495057; /* Couleur du texte légèrement plus sombre */
   }
   
   /* Style pour la date du match */
-  .match-date {
-    font-size: 14px;
-    color: #666;
-    text-align: center;
-  }
-  
+  .match-date,
   /* Style pour l'heure du match */
   .match-time {
-    font-size: 14px;
-    color: #666;
+    font-size: 16px; /* Taille de police légèrement augmentée */
+    color: #6c757d; /* Couleur gris plus douce */
     text-align: center;
+    padding: 10px 0; /* Espacement vertical */
   }
-  
+
   /* Ajout d'un effet de survol pour chaque ligne de match */
-  .v-data-table__wrapper tbody tr:hover {
-    background-color: rgba(0, 123, 255, 0.1);
-    transform: scale(1.02);
-    transition: background-color 0.3s, transform 0.2s ease-in-out;
+  .v-data-table__wrapper tbody tr {
+    transition: background-color 0.3s ease; /* Transition pour le fond */
   }
-  
+
+  .v-data-table__wrapper tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.1); /* Couleur de fond plus douce au survol */
+  }
+
   /* Marges supplémentaires pour une présentation plus espacée */
   .v-card {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+    transition: box-shadow 0.3s; /* Transition pour l'ombre */
   }
   
-  </style>
+  .v-card:hover {
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2); /* Ombre plus marquée au survol */
+  }
+</style>
+
   
