@@ -100,9 +100,36 @@
   }
   
   .player-name {
-    font-weight: bold;
-    color: #2980b9;
-  }
+  font-weight: bold;
+  color: #2980b9;
+  text-decoration: none;
+  position: relative;
+  display: inline-block;
+  transition: color 0.3s ease;
+  cursor: pointer;
+}
+
+.player-name::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: #2980b9;
+  visibility: hidden;
+  transform: scaleX(0);
+  transition: all 0.3s ease-in-out;
+}
+
+.player-name:hover {
+  color: #1d6fa5; /* Couleur légèrement plus foncée au survol */
+}
+
+.player-name:hover::after {
+  visibility: visible;
+  transform: scaleX(1);
+}
   
   .player-score {
     text-align: center;
