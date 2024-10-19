@@ -6,6 +6,7 @@ import PlayerStats from '@/components/PlayerStats.vue';
 import TeamStats from '@/components/TeamStats.vue';
 import MilestonePage from '@/components/MilestonePage.vue';
 import TopPlayers from '@/components/TopPlayers.vue';
+import ScoreWeek from '@/components/ScoreWeek.vue';
 const routes = [
   {
     path: '/login',
@@ -16,6 +17,11 @@ const routes = [
     path: '/matchs-week',
     name: 'matchsWeek',
     component: MatchWeek
+  },
+  {
+    path: '/scores-week',
+    name: 'scoresWeek',
+    component: ScoreWeek
   },
   {
     path: '/milestones',

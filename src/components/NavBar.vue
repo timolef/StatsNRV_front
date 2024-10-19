@@ -34,6 +34,7 @@ export default {
     return {
       navItems: [
         { title: "Matchs", route: "/matchs-week" },
+        { title: "Résultats", route: "/scores-week" },
         { title: "Classement équipes", route: "/teams-stats" },
         { title: "Recherche joueur", route: "/player-search" },
         { title: "Paliers", route: "/milestones" },
