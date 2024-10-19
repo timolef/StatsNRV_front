@@ -9,7 +9,7 @@
         <v-select
           v-model="selectedTeamSeason"
           :items="teamSeasons"
-          label="Select Season for Team Stats"
+          label="Seletionner une saison..."
           @update:model-value="onTeamSeasonChange"
           class="season-select"
           hide-details

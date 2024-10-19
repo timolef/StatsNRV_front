@@ -6,7 +6,7 @@
         <v-text-field
           v-model="playerName"
           @update:model-value="searchPlayers"
-          label="Search for a player"
+          label="Rechercher un joueur..."
           prepend-icon="mdi-magnify"
           class="search-bar"
         />

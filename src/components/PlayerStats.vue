@@ -2,7 +2,7 @@
   <v-container class="player-stats-container">
     <v-card class="player-stats-card">
       <v-card-title class="stats-header">
-        {{ loading ? 'Loading...' : (playerInfos ? `${playerInfos.firstName['default']} ${playerInfos.lastName['default']}` : 'Unknown Player') }} - Stats
+        {{ loading ? 'Loading...' : (playerInfos ? `${playerInfos.firstName?.['default'] || ''} ${playerInfos.lastName?.['default'] || ''}` : 'Unknown Player') }} - Stats
         
         <v-select
           v-model="selectedSeason"
@@ -27,7 +27,7 @@
           <p>But moyen: {{ averageStats.goals || 0 }}</p>
           <p>Assists moyen: {{ averageStats.assists || 0 }}</p>
           <p>Points moyen: {{ averageStats.points || 0 }}</p>
-          <p>Ratio tirs/buts: {{ averageStats.shotsPerGoal }}</p>
+          <p>Ratio tirs/buts: {{ averageStats.shotsPerGoal || 'N/A' }}</p>
         </v-card-subtitle>
       </v-card>
 
@@ -45,7 +45,7 @@
               hide-default-footer
             >
               <template v-slot:[`item.gameDate`]="{ item }">
-                {{ formatDate(item.gameDate) }}
+                {{ formatDate(item.gameDate) || 'N/A' }}
               </template>
               <template v-slot:[`item.decision`]="{ item }">
                 {{ item.decision || 'N/A' }}
@@ -84,10 +84,10 @@
               hide-default-footer
             >
               <template v-slot:[`item.gameDate`]="{ item }">
-                {{ formatDate(item.gameDate) }}
+                {{ formatDate(item.gameDate) || 'N/A' }}
               </template>
               <template v-slot:[`item.opponent`]="{ item }">
-                {{ item.opponentCommonName['default'] }}
+                {{ item.opponentCommonName?.['default'] || 'N/A' }}
               </template>
               <template v-slot:[`item.goals`]="{ item }">
                 {{ item.goals || 0 }}
@@ -104,38 +104,80 @@
             </div>
           </v-col>
         </template>
-
-        <!-- Tableau pour les stats par équipe -->
-        <v-col cols="12" md="12">
-          <v-card-title>Stats par Équipe</v-card-title>
-          <v-data-table
-            v-if="teamStats && teamStats.length"
-            :headers="teamStatsHeaders"
-            :items="teamStats"
-            class="stats-table elevation-1"
-            hide-default-footer
-          >
-            <template v-slot:[`item.teamName`]="{ item }">
-              {{ item.teamName }}
-            </template>
-            <template v-slot:[`item.goals`]="{ item }">
-              {{ item.goals || 0 }}
-            </template>
-            <template v-slot:[`item.assists`]="{ item }">
-              {{ item.assists || 0 }}
-            </template>
-            <template v-slot:[`item.points`]="{ item }">
-              {{ item.points || 0 }}
-            </template>
-          </v-data-table>
-          <div v-else class="no-data">
-            <p>Aucune donnée de statistiques d'équipe disponible.</p>
-          </div>
-        </v-col>
+        <template v-if="isGoalie">
+          <v-col cols="12" md="12">
+            <v-card-title>Stats Gardien par Equipe</v-card-title>
+            <v-data-table
+              v-if="gameLog && gameLog.length"
+              :headers="goalieTeamStatsHeaders"
+              :items="teamStats"
+              class="stats-table elevation-1"
+              hide-default-footer
+            >
+              <template v-slot:[`item.gameDate`]="{ item }">
+                {{ formatDate(item.gameDate) || 'N/A' }}
+              </template>
+              <template v-slot:[`item.decision`]="{ item }">
+                {{ item.decision || 'N/A' }}
+              </template>
+              <template v-slot:[`item.shotsAgainst`]="{ item }">
+                {{ item.shotsAgainst || 0 }}
+              </template>
+              <template v-slot:[`item.goalsAgainst`]="{ item }">
+                {{ item.goalsAgainst || 0 }}
+              </template>
+              <template v-slot:[`item.savePctg`]="{ item }">
+                {{ item.savePctg || 'N/A' }}
+              </template>
+              <template v-slot:[`item.shutouts`]="{ item }">
+                {{ item.shutouts || 0 }}
+              </template>
+            </v-data-table>
+            <div v-else class="no-data">
+              <p>Aucune donnée de match disponible pour ce gardien.</p>
+            </div>
+          </v-col>
+        </template>
+        <template v-else>
+          <v-col cols="12" md="12">
+            <v-card-title>Stats par Equipe</v-card-title>
+            <v-data-table
+              v-if="gameLog && gameLog.length"
+              :headers="teamStatsHeaders"
+              :items="teamStats"
+              class="stats-table elevation-1"
+              hide-default-footer
+            >
+              <template v-slot:[`item.gameDate`]="{ item }">
+                {{ formatDate(item.gameDate) || 'N/A' }}
+              </template>
+              <template v-slot:[`item.decision`]="{ item }">
+                {{ item.decision || 'N/A' }}
+              </template>
+              <template v-slot:[`item.shotsAgainst`]="{ item }">
+                {{ item.shotsAgainst || 0 }}
+              </template>
+              <template v-slot:[`item.goalsAgainst`]="{ item }">
+                {{ item.goalsAgainst || 0 }}
+              </template>
+              <template v-slot:[`item.savePctg`]="{ item }">
+                {{ item.savePctg || 'N/A' }}
+              </template>
+              <template v-slot:[`item.shutouts`]="{ item }">
+                {{ item.shutouts || 0 }}
+              </template>
+            </v-data-table>
+            <div v-else class="no-data">
+              <p>Aucune donnée de match disponible pour ce gardien.</p>
+            </div>
+          </v-col>
+        </template>
+        
       </v-row>
     </v-card>
   </v-container>
 </template>
+
   
   <script>
   import axios from 'axios';
@@ -169,6 +211,7 @@
         ],
         goalieStatsHeaders: [ /* En-têtes pour les gardiens */ 
         { title: 'Date', key: 'gameDate' },
+        { title: 'Adversaire', key: 'opponentAbbrev' },
         { title: 'Décision', key: 'decision' },
         { title: 'Tirs contre', key: 'shotsAgainst' },
         { title: 'Buts encaissés', key: 'goalsAgainst' },
@@ -190,6 +233,13 @@
           { title: 'Buts en inferiorité', key: 'shGoals' },
           { title: 'Points PP', key: 'ppPoints' },
           { title: 'Buts PP', key: 'ppGoals' },
+        ],
+        goalieTeamStatsHeaders: [ // En-têtes pour le tableau des stats par équipe
+          { title: 'Équipe', key: 'teamName' },
+          { title: 'Matchs', key: 'matchs' },
+          { title: 'Tirs contre', key: 'shotsAgainst' },
+          { title: 'Buts encaissés', key: 'goalsAgainst' },
+          { title: 'Blanchissages', key: 'shutouts' },
         ],
         loading: true,
       };
@@ -235,6 +285,7 @@
           const response = await axios.get(`${baseURL}/api/player/${playerId}`);
           this.playerInfos = response.data;
           this.isGoalie = this.playerInfos?.position === 'G';
+          console.log(this.isGoalie)
         } catch (error) {
           console.error('Error fetching player infos:', error);
         } finally {
@@ -267,7 +318,13 @@
               shPoints: 0,
               shGoals: 0,
               ppPoints: 0,
-              ppGoals: 0
+              ppGoals: 0,
+              shotsAgainst: 0,
+              goalsAgainst: 0,
+              shutouts: 0,
+              savePctg: 0
+
+
             };
           }
   
@@ -283,8 +340,16 @@
           teamStatsMap[opponentName].shGoals += game.shorthandedGoals || 0;
           teamStatsMap[opponentName].ppPoints += game.powerPlayPoints || 0;
           teamStatsMap[opponentName].ppGoals += game.powerPlayGoals || 0;
+          teamStatsMap[opponentName].shotsAgainst += game.shotsAgainst || 0;
+          teamStatsMap[opponentName].goalsAgainst += game.goalsAgainst || 0;
         });
-  
+        Object.values(teamStatsMap).forEach(team => {
+          if (team.shotsAgainst > 0) {
+            team.savePctg = ((team.shotsAgainst - team.goalsAgainst) / team.shotsAgainst) * 100;
+          } else {
+            team.savePctg = 0; // Si aucun tir contre l'équipe, on met 0 pour éviter une division par zéro
+          }
+        });
         // Convertir le map en tableau
         this.teamStats = Object.values(teamStatsMap);
       },
@@ -313,6 +378,11 @@
       },
     },
     created() {
+      const playerId = this.$route.params.id;
+      this.fetchPlayerStats(playerId, this.selectedSeason);
+      this.fetchPlayerIdentity(playerId);
+    },
+    mounted() {
       const playerId = this.$route.params.id;
       this.fetchPlayerStats(playerId, this.selectedSeason);
       this.fetchPlayerIdentity(playerId);
