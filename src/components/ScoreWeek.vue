@@ -1,132 +1,145 @@
 <template>
-    <v-container class="matches-container">
-      <v-card class="matches-card">
-        <v-card-title class="matches-title">Résultats du jour</v-card-title>
-        
-        <v-data-table
-          :headers="headers"
-          :items="flattenedMatches"
-          class="matches-table elevation-1"
-        >
-          <!-- Colonne Date -->
-          <template v-slot:[`item.gameDate`]="{ item }">
-            <div class="match-date">
-              {{ formatDate(item.gameDate) }}
-            </div>
-          </template>
-  
-          <!-- Colonne Équipe à domicile avec logo -->
-          <template v-slot:[`item.homeTeamName`]="{ item }">
-            <div class="team-info">
-              <img :src="item.homeTeamLogo" alt="Home Team Logo" class="team-logo" />
-              <span class="team-name">{{ item.homeTeamName }}</span>
-            </div>
-          </template>
-        
-          <template v-slot:[`item.score`]="{ item }">
-            <div class="match-score">
-                <span v-if="item.homeTeamScore >= 0">{{ item.homeTeamScore }} : {{ item.awayTeamScore }}</span>
-                <span v-else>Pas encore commencé</span>
+  <v-container class="matches-container">
+    <v-card class="matches-card">
+      <v-card-title class="matches-title">Résultats du jour</v-card-title>
 
-                <!-- Show "Live" icon and text if the game is live -->
-                <div v-if="item.gameState === 'LIVE'" class="live-status">
-                <img src="https://img.icons8.com/color/512/youtube-live.png" alt="Live Icon" class="live-icon" />
-                <span>Match en cours</span>
-                </div>
-                <div v-else-if="item.gameState === 'OFF' || item.gameState === 'FINAL'" class="finished-status">
-                <span class="finished-icon"></span> Match terminé
-                </div>
-            </div>
-            </template>
+      <!-- Ajout du v-date-picker -->
+      <v-date-picker
+        v-model="selectedDate"
+        @update:model-value="fetchMatches"
+        @change="fetchMatches"
+      ></v-date-picker>
 
-          <!-- Colonne Équipe visiteuse avec logo -->
-          <template v-slot:[`item.awayTeamName`]="{ item }">
-            <div class="team-info">
-              <img :src="item.awayTeamLogo" alt="Away Team Logo" class="team-logo" />
-              <span class="team-name">{{ item.awayTeamName }}</span>
+      <v-data-table
+        :headers="headers"
+        :items="flattenedMatches"
+        class="matches-table elevation-1"
+      >
+        <!-- Colonne Date -->
+        <template v-slot:[`item.gameDate`]="{ item }">
+          <div class="match-date">
+            {{ formatDate(item.gameDate) }}
+          </div>
+        </template>
+
+        <!-- Colonne Équipe à domicile avec logo -->
+        <template v-slot:[`item.homeTeamName`]="{ item }">
+          <div class="team-info">
+            <img :src="item.homeTeamLogo" alt="Home Team Logo" class="team-logo" />
+            <span class="team-name">{{ item.homeTeamName }}</span>
+          </div>
+        </template>
+
+        <!-- Colonne Score -->
+        <template v-slot:[`item.score`]="{ item }">
+          <div class="match-score">
+            <span v-if="item.homeTeamScore >= 0">{{ item.homeTeamScore }} : {{ item.awayTeamScore }}</span>
+            <span v-else>Pas encore commencé</span>
+
+            <!-- Show "Live" icon and text if the game is live -->
+            <div v-if="item.gameState === 'LIVE'" class="live-status">
+              <img src="https://img.icons8.com/color/512/youtube-live.png" alt="Live Icon" class="live-icon" />
+              <span>Match en cours</span>
             </div>
-          </template>
-  
-          <!-- Colonne Heure du match -->
-          <template v-slot:[`item.gameTime`]="{ item }">
-            <div class="match-time">
-              {{ item.gameTime }}
+            <div v-else-if="item.gameState === 'OFF' || item.gameState === 'FINAL'" class="finished-status">
+              <span class="finished-icon"></span> Match terminé
             </div>
-          </template>
-          <template v-slot:[`item.details`]="{ item }">
+          </div>
+        </template>
+
+        <!-- Colonne Équipe visiteuse avec logo -->
+        <template v-slot:[`item.awayTeamName`]="{ item }">
+          <div class="team-info">
+            <img :src="item.awayTeamLogo" alt="Away Team Logo" class="team-logo" />
+            <span class="team-name">{{ item.awayTeamName }}</span>
+          </div>
+        </template>
+
+        <!-- Colonne Heure du match -->
+        <template v-slot:[`item.gameTime`]="{ item }">
+          <div class="match-time">
+            {{ item.gameTime }}
+          </div>
+        </template>
+        
+        <!-- Colonne Détails du match -->
+        <template v-slot:[`item.details`]="{ item }">
           <v-btn icon @click="goToMatchDetails(item.gameId)">
             <v-icon>mdi-eye</v-icon>
           </v-btn>
         </template>
-        </v-data-table>
-      </v-card>
-    </v-container>
-  </template>
-  
-  <script>
-  import axios from 'axios';
-  
-  export default {
-    data() {
-      return {
-        headers: [
-          { title: "Date", key: "gameDate" },
-          { title: "Domicile", key: "homeTeamName" },
-          { title: "Score", key: "score" },
-          { title: "Exterieur", key: "awayTeamName" },
-          { title: "Heure", key: "gameTime" },
-          { title: "Détails", key: "details" } // Nouvelle colonne Détails
-        ],
-        matches: [], // Matches data
-        flattenedMatches: [], // Flattened list for the table
-      };
-    },
-    methods: {
-      async fetchMatches() {
-        try {
-          let baseURL = null;
-          if (process.env.VUE_APP_NODE_ENV === "development") {
-            baseURL = process.env.VUE_APP_API_URL_LOCAL;
-          } else {
-            baseURL = process.env.VUE_APP_API_URL_PROD;
-          }
-  
-          const response = await axios.get(`${baseURL}/score-matches`);
-          this.matches = response.data;
-          console.log(this.matches)
-          this.flattenedMatches = response.data.map(game => ({
-            gameDate: game.gameDate,
-            gameId: game.gameId,
-            homeTeamName: game.teams.homeTeam.name,
-            homeTeamLogo: game.teams.homeTeam.logo,
-            homeTeamScore : game.teams.homeTeam.score,
-            awayTeamName: game.teams.awayTeam.name,
-            awayTeamLogo: game.teams.awayTeam.logo,
-            awayTeamScore : game.teams.awayTeam.score,
-            gameTime: game.gameTime,
-            gameState: game.gameState,
-          }));
-        } catch (error) {
-          console.error('Error fetching matches:', error);
+      </v-data-table>
+    </v-card>
+  </v-container>
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+  data() {
+    return {
+      headers: [
+        { title: "Date", key: "gameDate" },
+        { title: "Domicile", key: "homeTeamName" },
+        { title: "Score", key: "score" },
+        { title: "Exterieur", key: "awayTeamName" },
+        { title: "Heure", key: "gameTime" },
+        { title: "Détails", key: "details" } // Nouvelle colonne Détails
+      ],
+      matches: [], // Matches data
+      flattenedMatches: [], // Flattened list for the table
+      selectedDate: new Date(), // Date sélectionnée (au format ISO, chaîne de caractères)
+      maxDate: new Date().toISOString().substr(0, 10), // Date maximale autorisée (aujourd'hui)
+    };
+  },
+  methods: {
+    async fetchMatches() {
+      try {
+        console.log("date : ", this.selectedDate.getFullYear())
+        const year = this.selectedDate.getFullYear()
+        const month = String(this.selectedDate.getMonth() + 1).padStart(2, '0')
+        const day = String(this.selectedDate.getDate()).padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+        let baseURL = null;
+        if (process.env.VUE_APP_NODE_ENV === "development") {
+          baseURL = process.env.VUE_APP_API_URL_LOCAL;
+        } else {
+          baseURL = process.env.VUE_APP_API_URL_PROD;
         }
-      },
-      goToMatchDetails(matchId) {
-        console.log("id : ", matchId)
-        // Redirige vers la page de détails du match avec l'id du match
-        this.$router.push({ name: 'MatchDetails', params: { id: matchId } });
-      },
-      formatDate(date) {
-        return new Date(date).toLocaleDateString();
-      },
-      formatTime(time) {
-        return new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      },
+
+        const response = await axios.get(`${baseURL}/score-matches`, { params: { date: formattedDate } });
+        this.matches = response.data;
+        this.flattenedMatches = response.data.map(game => ({
+          gameDate: game.gameDate,
+          gameId: game.gameId,
+          homeTeamName: game.teams.homeTeam.name,
+          homeTeamLogo: game.teams.homeTeam.logo,
+          homeTeamScore: game.teams.homeTeam.score,
+          awayTeamName: game.teams.awayTeam.name,
+          awayTeamLogo: game.teams.awayTeam.logo,
+          awayTeamScore: game.teams.awayTeam.score,
+          gameTime: game.gameTime,
+          gameState: game.gameState,
+        }));
+      } catch (error) {
+        console.error('Error fetching matches:', error);
+      }
     },
-    mounted() {
-      this.fetchMatches(); // Fetch live matches on component mount
+    goToMatchDetails(matchId) {
+      this.$router.push({ name: 'MatchDetails', params: { id: matchId } });
     },
-  };
-  </script>
+    formatDate(date) {
+      return new Date(date).toLocaleDateString();
+    },
+  },
+  mounted() {
+    this.fetchMatches(); // Fetch matches on component mount
+  },
+};
+</script>
+
+
   
   <style scoped>
   /* Global styling improvements */
