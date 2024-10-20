@@ -1,5 +1,6 @@
 <template>
   <v-container class="player-stats-container">
+    
     <v-card class="player-stats-card">
       <v-card-title class="stats-header">
         {{ loading ? 'Loading...' : (playerInfos ? `${playerInfos.firstName?.['default'] || ''} ${playerInfos.lastName?.['default'] || ''}` : 'Unknown Player') }} - Stats
@@ -12,7 +13,10 @@
           class="season-select"
         ></v-select>
       </v-card-title>
-
+      
+      <v-btn @click="goBack" class="mb-4 mt-4" color="primary">
+      Retour à la recherche
+    </v-btn>
       <!-- Carte pour les statistiques moyennes sur les 5 derniers matchs -->
       <v-card 
         class="mt-4 average-stats-card"
@@ -351,6 +355,9 @@
         // Convertir le map en tableau
         this.teamStats = Object.values(teamStatsMap);
       },
+      goBack() {
+      this.$router.push('/player-search');
+    },
       calculateAverageStats(gameLog) {
         if (!gameLog || gameLog.length === 0) return;
   
@@ -387,6 +394,7 @@
       this.fetchPlayerStats(playerId, this.selectedSeason);
       this.fetchPlayerIdentity(playerId);
     },
+    
     mounted() {
       const playerId = this.$route.params.id;
       this.fetchPlayerStats(playerId, this.selectedSeason);
