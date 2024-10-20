@@ -39,6 +39,7 @@ export default {
         { title: "Recherche joueur", route: "/player-search" },
         { title: "Paliers", route: "/milestones" },
         { title: "Performances", route: "/top-players" },
+        { title: "Comparer joueurs", route: "/compare-players" },
       ],
     };
   },

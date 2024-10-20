@@ -8,6 +8,7 @@ import MilestonePage from '@/components/MilestonePage.vue';
 import TopPlayers from '@/components/TopPlayers.vue';
 import ScoreWeek from '@/components/ScoreWeek.vue';
 import MatchDetails from '@/components/MatchDetails.vue';
+import ComparePlayers from '@/components/ComparePlayers.vue';
 const routes = [
   {
     path: '/login',
@@ -28,6 +29,12 @@ const routes = [
     path: '/match/:id', // Utilise le paramètre id pour l'ID du match
     name: 'MatchDetails',
     component: MatchDetails,
+    props: true, // Pour passer l'ID en tant que prop
+  },
+  {
+    path: '/compare-players', // Utilise le paramètre id pour l'ID du match
+    name: 'ComparePlayers',
+    component: ComparePlayers,
     props: true, // Pour passer l'ID en tant que prop
   },
   {
