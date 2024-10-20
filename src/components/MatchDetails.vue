@@ -32,7 +32,7 @@
               <div>Match terminé</div>
             </div>
             <div v-else class="live-info">
-                <div v-if="matchDetails.gameState == 'LIVE' || matchDetails.gameState == 'CRIT'" class="mb-4">Score : {{ matchDetails.homeTeam.score }} - {{ matchDetails.awayTeam.score }}</div>
+                <div v-if="matchDetails.gameState == 'LIVE' || matchDetails.gameState == 'CRIT' || matchDetails.gameState == 'FINAL'" class="mb-4">Score : {{ matchDetails.homeTeam.score }} - {{ matchDetails.awayTeam.score }}</div>
               <span v-if="matchDetails.gameState == 'LIVE' || matchDetails.gameState == 'CRIT'" class="live-badge">En Direct</span>
               <span v-if="matchDetails.gameState == 'FINAL'" class="live-badge">Match terminé</span>
               <div v-else>Match à venir</div>
