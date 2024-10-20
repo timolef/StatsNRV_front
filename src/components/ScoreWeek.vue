@@ -37,9 +37,9 @@
             <span v-else>Pas encore commencé</span>
 
             <!-- Show "Live" icon and text if the game is live -->
-            <div v-if="item.gameState === 'LIVE'" class="live-status">
+            <div v-if="item.gameState === 'LIVE' || item.gameState === 'CRIT'" class="live-status">
               <img src="https://img.icons8.com/color/512/youtube-live.png" alt="Live Icon" class="live-icon" />
-              <span>Match en cours</span>
+              <span>Match en cours <span v-if="item.gameState === 'CRIT'">(Bientot fini)</span></span>
             </div>
             <div v-else-if="item.gameState === 'OFF' || item.gameState === 'FINAL'" class="finished-status">
               <span class="finished-icon"></span> Match terminé
@@ -110,6 +110,7 @@ export default {
 
         const response = await axios.get(`${baseURL}/score-matches`, { params: { date: formattedDate } });
         this.matches = response.data;
+        console.log(this.matches)
         this.flattenedMatches = response.data.map(game => ({
           gameDate: game.gameDate,
           gameId: game.gameId,
