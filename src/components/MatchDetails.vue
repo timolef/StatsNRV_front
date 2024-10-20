@@ -43,7 +43,12 @@
               <div v-if="period.goals && period.goals.length">
                 <ul>
                   <li v-for="(goal, i) in period.goals" :key="i" class="goal">
-                    <span>{{ goal.timeInPeriod }} - {{ goal.name.default }} a marqué ({{ goal.teamAbbrev?.default }})</span>
+                    <span>{{ goal.timeInPeriod }} - 
+                        <router-link :to="`/player/${goal.playerId}`" class="player-link">
+                            {{ goal.name.default }}
+                        </router-link> 
+                        a marqué ({{ goal.teamAbbrev?.default }})
+                        </span>
                   </li>
                 </ul>
               </div>
@@ -240,6 +245,20 @@
   color: #555;
   padding-left: 20px;
   position: relative;
+}
+
+/* Style pour les liens des joueurs */
+.player-link {
+  color: #007bff; /* Couleur bleu par défaut pour les liens */
+  text-decoration: none; /* Supprime le soulignement par défaut */
+  font-weight: bold; /* Met le texte en gras */
+  transition: color 0.3s ease, text-decoration 0.3s ease; /* Animation de transition pour le changement de couleur */
+}
+
+.player-link:hover {
+  color: #0056b3; /* Couleur plus sombre au survol */
+  text-decoration: underline; /* Ajoute un soulignement au survol */
+  cursor: pointer; /* Change le curseur pour indiquer qu'il s'agit d'un lien */
 }
 
 .goal:before {
