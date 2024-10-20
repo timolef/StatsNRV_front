@@ -53,6 +53,11 @@
               {{ item.gameTime }}
             </div>
           </template>
+          <template v-slot:[`item.details`]="{ item }">
+          <v-btn icon @click="goToMatchDetails(item.gameId)">
+            <v-icon>mdi-eye</v-icon>
+          </v-btn>
+        </template>
         </v-data-table>
       </v-card>
     </v-container>
@@ -68,9 +73,9 @@
           { title: "Date", key: "gameDate" },
           { title: "Domicile", key: "homeTeamName" },
           { title: "Score", key: "score" },
-
           { title: "Exterieur", key: "awayTeamName" },
           { title: "Heure", key: "gameTime" },
+          { title: "Détails", key: "details" } // Nouvelle colonne Détails
         ],
         matches: [], // Matches data
         flattenedMatches: [], // Flattened list for the table
@@ -91,6 +96,7 @@
           console.log(this.matches)
           this.flattenedMatches = response.data.map(game => ({
             gameDate: game.gameDate,
+            gameId: game.gameId,
             homeTeamName: game.teams.homeTeam.name,
             homeTeamLogo: game.teams.homeTeam.logo,
             homeTeamScore : game.teams.homeTeam.score,
@@ -103,6 +109,11 @@
         } catch (error) {
           console.error('Error fetching matches:', error);
         }
+      },
+      goToMatchDetails(matchId) {
+        console.log("id : ", matchId)
+        // Redirige vers la page de détails du match avec l'id du match
+        this.$router.push({ name: 'MatchDetails', params: { id: matchId } });
       },
       formatDate(date) {
         return new Date(date).toLocaleDateString();
