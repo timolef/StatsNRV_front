@@ -37,6 +37,23 @@
               <span v-if="matchDetails.gameState == 'FINAL'" class="live-badge">Match terminé</span>
               <div v-else>Match à venir</div>
             </div>
+            <div class="teams-container">
+            <!-- Joueurs de l'équipe à domicile -->
+            <div class="team-home">
+              <h4>Joueurs de l'équipe à domicile</h4>
+              <div v-for="(player, index) in homePlayers" :key="index" class="player">
+                <span>{{ player.firstName.default }} {{ player.lastName.default }} - {{ player.positionCode }}</span>
+              </div>
+            </div>
+
+            <!-- Joueurs de l'équipe à l'extérieur -->
+            <div class="team-away">
+              <h4>Joueurs de l'équipe à l'extérieur</h4>
+              <div v-for="(player, index) in awayPlayers" :key="index" class="player">
+                <span>{{ player.firstName.default }} {{ player.lastName.default }} - {{ player.positionCode }}</span>
+              </div>
+            </div>
+          </div>
             <div v-if="matchDetails.summary && matchDetails.summary.scoring.length">
             <h3>Résumé des buts</h3>
             <div v-for="(period, index) in matchDetails.summary.scoring" :key="index" class="period">
@@ -76,8 +93,17 @@
     data() {
       return {
         matchDetails: null,
+        rosters: null,
       };
     },
+    computed: {
+    homePlayers() {
+      return this.rosters.filter(player => player.teamId === this.matchDetails.homeTeam.teamId);
+    },
+    awayPlayers() {
+      return this.rosters.filter(player => player.teamId === this.matchDetails.awayTeam.teamId);
+    },
+  },
     methods: {
       async fetchMatchDetails() {
         try {
@@ -87,15 +113,19 @@
               : process.env.VUE_APP_API_URL_PROD;
   
           const response = await axios.get(`${baseURL}/match/${this.id}`);
-          console.log(response.data)
+          const repRosters = await axios.get(`${baseURL}/rosters/${this.id}`)
+          this.rosters = repRosters.data
+          console.log("rosters : ", this.rosters)
           this.matchDetails = {
             homeTeam: {
+              teamId: response.data.homeTeam.id, 
                 fullName: response.data.homeTeam.placeName.default + " " + response.data.homeTeam.name.default,
               name: response.data.homeTeam.abbrev,
               logo: response.data.homeTeam.logo,
               score: response.data.homeTeam.score,
             },
             awayTeam: {
+              teamId: response.data.awayTeam.id,
                 fullName: response.data.awayTeam.placeName.default + " " + response.data.awayTeam.name.default,
               name: response.data.awayTeam.abbrev,
               logo: response.data.awayTeam.logo,
@@ -261,6 +291,19 @@
   text-decoration: underline; /* Ajoute un soulignement au survol */
   cursor: pointer; /* Change le curseur pour indiquer qu'il s'agit d'un lien */
 }
+.player-left {
+  text-align: left;
+}
+
+/* Style des joueurs à droite (équipe à l'extérieur) */
+.player-right {
+  text-align: right;
+}
+
+.players-container {
+  display: flex;
+  flex-direction: column;
+}
 
 .goal:before {
   content: "⚽";
@@ -284,6 +327,74 @@ h3 {
   color: #333;
   text-transform: uppercase;
   letter-spacing: 1px;
+}
+/* Container pour les deux équipes */
+/* Container principal pour les deux équipes */
+.teams-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px; /* Espace entre les deux colonnes */
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 30px;
+}
+
+/* Style général pour les équipes */
+.team-home,
+.team-away {
+  flex: 1;
+  background-color: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Style des titres pour les équipes */
+.team-home h4,
+.team-away h4 {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+}
+
+/* Style des joueurs */
+.player {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  transition: background-color 0.3s ease;
+}
+
+.player:hover {
+  background-color: #f1f1f1;
+}
+
+/* Texte pour les informations des joueurs */
+.player span {
+  font-size: 1em;
+  color: #555;
+}
+
+/* Espacement supplémentaire pour les derniers éléments */
+.team-home .player:last-child,
+.team-away .player:last-child {
+  border-bottom: none;
+}
+
+/* Style pour le conteneur de l'équipe à domicile */
+.team-home {
+  text-align: left;
+  border-right: 2px solid #ddd;
+}
+
+/* Style pour le conteneur de l'équipe à l'extérieur */
+.team-away {
+  text-align: left;
 }
 
 h4 {

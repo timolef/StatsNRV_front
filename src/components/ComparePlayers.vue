@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-card class="comparison-card">
-      <v-card-title class="comparison-title">Compare Player Stats</v-card-title>
+      <v-card-title class="comparison-title">Comparaison de joueur</v-card-title>
 
       <!-- Input fields to search for players -->
       <v-row class="search-fields">
@@ -55,11 +55,19 @@
         <template v-slot:[`item.stat`]="{ item }">
           <div>{{ item.stat }}</div>
         </template>
+
+        <!-- Player 1 - Appliquer les classes conditionnelles -->
         <template v-slot:[`item.player1`]="{ item }">
-          <div>{{ item.player1 }}</div>
+          <div :class="getClass(item.player1, item.player2)">
+            {{ item.player1 }}
+          </div>
         </template>
+
+        <!-- Player 2 - Appliquer les classes conditionnelles -->
         <template v-slot:[`item.player2`]="{ item }">
-          <div>{{ item.player2 }}</div>
+          <div :class="getClass(item.player2, item.player1)">
+            {{ item.player2 }}
+          </div>
         </template>
       </v-data-table>
     </v-card>
@@ -99,6 +107,17 @@ export default {
     },
   },
   methods: {
+    // Méthode pour appliquer une classe en fonction de la comparaison
+    getClass(val1, val2) {
+      if (val1 > val2) {
+        return 'highest-stat'; // Classe pour les valeurs les plus élevées
+      } else if (val1 < val2) {
+        return 'lowest-stat'; // Classe pour les valeurs les plus basses
+      } else {
+        return 'equal-stat'; // Pas de style si égalité
+      }
+    },
+
     async searchPlayers(playerNum) {
       const playerName = playerNum === 1 ? this.playerName1 : this.playerName2;
       if (!playerName) return;
@@ -114,6 +133,7 @@ export default {
         console.error("Error fetching player list:", error);
       }
     },
+
     async fetchPlayerStats(playerNum) {
       const playerId = playerNum === 1 ? this.selectedPlayer1 : this.selectedPlayer2;
       if (!playerId) return;
@@ -199,6 +219,28 @@ export default {
 .v-row {
   display: flex;
   justify-content: space-between;
+}
+
+/* Classe pour la statistique la plus haute (en vert) */
+.highest-stat {
+  background-color: green;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+}
+
+/* Classe pour la statistique la plus basse (en rouge) */
+.lowest-stat {
+  background-color: red;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+}
+.equal-stat {
+  background-color: grey;
+  font-weight: bold;
+  color: white;
+  text-align: center;
 }
 
 @media (max-width: 768px) {
