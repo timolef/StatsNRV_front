@@ -42,7 +42,8 @@
             <div class="team-home">
               <h4>Joueurs de l'équipe à domicile</h4>
               <div v-for="(player, index) in homePlayers" :key="index" class="player">
-                <span>{{ player.firstName.default }} {{ player.lastName.default }} - {{ player.positionCode }}</span>
+                <img :src="player.headshot" alt="Photo du joueur" class="player-photo" />
+                <span>{{ player.firstName.default }} {{ player.lastName.default }} - {{ player.positionCode }} - {{ player.sweaterNumber }}</span>
               </div>
             </div>
 
@@ -50,7 +51,8 @@
             <div class="team-away">
               <h4>Joueurs de l'équipe à l'extérieur</h4>
               <div v-for="(player, index) in awayPlayers" :key="index" class="player">
-                <span>{{ player.firstName.default }} {{ player.lastName.default }} - {{ player.positionCode }}</span>
+                <img :src="player.headshot" alt="Photo du joueur" class="player-photo" />
+                <span>{{ player.firstName.default }} {{ player.lastName.default }} - {{ player.positionCode }} - {{ player.sweaterNumber }}</span>
               </div>
             </div>
           </div>
@@ -368,6 +370,13 @@ h3 {
   padding: 10px 0;
   border-bottom: 1px solid #ddd;
   transition: background-color 0.3s ease;
+}
+.player-photo {
+  width: 50px; /* Ajuster la taille selon vos besoins */
+  height: 50px;
+  border-radius: 50%; /* Rond pour les photos */
+  margin-right: 15px;
+  object-fit: cover; /* Assure que l'image ne soit pas déformée */
 }
 
 .player:hover {
