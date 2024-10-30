@@ -10,6 +10,13 @@
                 vous pouvez souscrire à notre abonnement.
               </p>
               <p class="subscription-text">
+                <strong>Tarifs d'abonnement :</strong>
+              </p>
+              <ul class="subscription-list">
+                <li>5€ pour le premier mois, puis 8€ par mois</li>
+                <li>80€ par an (économisez 16€ par an)</li>
+              </ul>
+              <p class="subscription-text">
                 Actuellement, pour vous abonner, veuillez nous contacter directement via 
                 <strong>Discord (@leftim)</strong> ou <strong>Twitter</strong>. Le paiement se fait via <strong>PayPal</strong>.
               </p>
@@ -54,6 +61,13 @@
     margin-bottom: 20px;
   }
   
+  .subscription-list {
+    font-size: 18px;
+    text-align: left;
+    margin-bottom: 20px;
+    padding-left: 20px;
+  }
+  
   .contact-btn {
     margin: 10px;
     width: 180px;
@@ -66,17 +80,16 @@
     color: #3f51b5;
   }
   
-  p {
+  p, li {
     font-family: 'Roboto', sans-serif;
     line-height: 1.6;
     color: #333;
   }
   
   @media (max-width: 600px) {
-    .subscription-text {
+    .subscription-text, .subscription-list {
       font-size: 16px;
     }
   }
   </style>
-  ``
   
