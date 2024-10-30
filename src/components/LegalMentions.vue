@@ -16,7 +16,6 @@
                 <h2>Hébergeur du site</h2>
                 <p><strong>Nom :</strong> Vercel Inc.</p>
                 <p><strong>Adresse :</strong> 340 S Lemon Ave #4133, Walnut, CA 91789, USA</p>
-                <p><strong>Téléphone :</strong> [Téléphone de l'hébergeur, si nécessaire]</p>
               </div>
               <div class="legal-section">
                 <h2>Propriété intellectuelle</h2>
@@ -31,6 +30,10 @@
                 <h2>Données personnelles</h2>
                 <p>Les données personnelles collectées sur le site <strong>StatsNRV</strong> sont utilisées exclusivement dans le cadre de l’abonnement Premium. Conformément au RGPD, vous disposez du droit d'accès, de modification et de suppression de vos données. Pour exercer vos droits, veuillez nous contacter à <a href="mailto:timotheelefebvre0@gmail.com">timotheelefebvre0@gmail.com</a>.</p>
                 <p>Nous nous engageons à protéger vos données et à respecter votre vie privée.</p>
+              </div>
+              <div class="legal-section">
+                <h2>Traitement des paiements</h2>
+                <p>Les paiements effectués sur notre site sont traités par Stripe. Nous ne stockons pas vos informations de carte de crédit. Pour plus d'informations sur la gestion des données par Stripe, vous pouvez consulter leur <a href="https://stripe.com/privacy" target="_blank" rel="noopener">Politique de Confidentialité</a> et leurs <a href="https://stripe.com/legal" target="_blank" rel="noopener">Conditions de Service</a>.</p>
               </div>
               <div class="legal-section">
                 <h2>Cookies</h2>
