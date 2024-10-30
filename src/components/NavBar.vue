@@ -92,7 +92,9 @@ export default {
       }
        // Décoder le base64
       console.log("Données décodées:", decodedPayload);
-      isPremium = decodedPayload.is_premium
+      if(decodedPayload) {
+        isPremium = decodedPayload.is_premium
+      }
       return decodedPayload;
     };
     // Utilise cette fonction pour décoder le token
