@@ -12,8 +12,23 @@ import ComparePlayers from '@/components/ComparePlayers.vue';
 import RegisterPage from '@/components/RegisterPage.vue';
 import ProfilePage from '@/components/ProfilePage.vue';
 import { useAuth } from '../composables/useAuth';
-import jwt_decode from 'jwt-decode';
 import AbonnementPage from '@/components/AbonnementPage.vue';
+let decodedPayload = null
+let payload = null
+let isPremium = 0
+const decodeTokenManually = (token) => {
+  if(token) {
+    payload = token.split('.')[1]; // Obtenir la partie payload du JWT
+    decodedPayload = JSON.parse(atob(payload));
+  }
+   // Décoder le base64
+  console.log("Données décodées:", decodedPayload);
+  if(decodedPayload) {
+    isPremium = decodedPayload.is_premium
+    decodedPayload.is_premium = isPremium
+  }
+  return decodedPayload;
+};
 const routes = [
   {
     path: '/login',
@@ -52,7 +67,7 @@ const routes = [
       if (token) {
         try {
           // Décodage du token
-          const decoded = jwt_decode(token);
+          const decoded = decodeTokenManually(token);
 
           // Vérification si l'utilisateur est premium
           if (decoded.is_premium) {
@@ -83,7 +98,7 @@ const routes = [
       if (token) {
         try {
           // Décodage du token
-          const decoded = jwt_decode(token);
+          const decoded = decodeTokenManually(token);
 
           // Vérification si l'utilisateur est premium
           if (decoded.is_premium) {
@@ -111,7 +126,7 @@ const routes = [
       if (token) {
         try {
           // Décodage du token
-          const decoded = jwt_decode(token);
+          const decoded = decodeTokenManually(token);
 
           // Vérification si l'utilisateur est premium
           if (decoded.is_premium) {
@@ -146,7 +161,7 @@ const routes = [
       if (token) {
         try {
           // Décodage du token
-          const decoded = jwt_decode(token);
+          const decoded = decodeTokenManually(token);
 
           // Vérification si l'utilisateur est premium
           if (decoded.is_premium) {
@@ -176,7 +191,7 @@ const routes = [
       if (token) {
         try {
           // Décodage du token
-          const decoded = jwt_decode(token);
+          const decoded = decodeTokenManually(token);
 
           // Vérification si l'utilisateur est premium
           if (decoded.is_premium) {
@@ -206,7 +221,7 @@ const routes = [
       if (token) {
         try {
           // Décodage du token
-          const decoded = jwt_decode(token);
+          const decoded = decodeTokenManually(token);
 
           // Vérification si l'utilisateur est premium
           if (decoded.is_premium) {
@@ -236,7 +251,7 @@ const routes = [
       if (token) {
         try {
           // Décodage du token
-          const decoded = jwt_decode(token);
+          const decoded = decodeTokenManually(token);
 
           // Vérification si l'utilisateur est premium
           if (decoded.is_premium) {
