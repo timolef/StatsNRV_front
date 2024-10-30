@@ -13,6 +13,7 @@ import RegisterPage from '@/components/RegisterPage.vue';
 import ProfilePage from '@/components/ProfilePage.vue';
 import { useAuth } from '../composables/useAuth';
 import AbonnementPage from '@/components/AbonnementPage.vue';
+import LegalMentions from '@/components/LegalMentions.vue';
 let decodedPayload = null
 let payload = null
 let isPremium = 0
@@ -49,6 +50,11 @@ const routes = [
     path: '/scores-week',
     name: 'scoresWeek',
     component: ScoreWeek,
+  },
+  {
+    path: '/legal-mentions',
+    name: 'legalMentions',
+    component: LegalMentions,
   },
   {
     path: '/profile',

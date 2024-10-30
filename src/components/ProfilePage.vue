@@ -28,6 +28,9 @@
             <v-btn type="submit" color="primary" block class="mt-4">
               Mettre à jour
             </v-btn>
+            <v-btn @click="navigateToLegalMentions" color="primary" block class="mt-4">
+              Mentions légales
+            </v-btn>
           </v-form>
         </v-card-text>
       </v-card>
@@ -49,7 +52,9 @@
       });
       const email = ref('');
       const pseudo = ref('');
-  
+      const navigateToLegalMentions = () => {
+      router.push('/legal-mentions');
+    };
       const fetchUserData = () => {
         const token = getToken();
         if (token) {
@@ -88,7 +93,8 @@
         email,
         pseudo,
         updateProfile,
-        logout
+        logout,
+        navigateToLegalMentions
       };
     }
   };
