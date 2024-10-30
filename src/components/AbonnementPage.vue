@@ -18,7 +18,7 @@
               </ul>
               <p class="subscription-text">
                 Actuellement, pour vous abonner, veuillez nous contacter directement via 
-                <strong>Discord (@leftim)</strong> ou <strong>Twitter</strong>. Le paiement se fait via <strong>PayPal</strong>.
+                <strong>Discord (@leftim ou @prononrv)</strong> ou <strong>Twitter</strong>. Le paiement se fait via <strong>PayPal</strong>.
               </p>
               <p class="subscription-text">
                 Pour toute question ou pour démarrer le processus d'abonnement, vous pouvez nous joindre via :
