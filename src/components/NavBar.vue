@@ -78,6 +78,7 @@ export default {
     const navItems = [
       { title: "Matchs", route: "/matchs-week" },
       { title: "Résultats", route: "/scores-week" },
+      { title: "S'abonner", route: "/subscription" },
     ];
 
     // Calculer si l'utilisateur est authentifié
